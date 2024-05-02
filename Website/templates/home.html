@@ -1,0 +1,112 @@
+{% extends "base.html" %} {% block title%}Home{% endblock %} 
+
+{% block content%}
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main{
+    display: block;
+}
+.container{
+   width: auto;
+   height: auto;
+   margin: auto;
+   overflow: hidden;
+}
+.maintitle{
+    height: 100px;
+    margin-top: 70px;
+    margin-left: 30px;
+    text-align: center;
+}
+.boxmain{
+    height: 500px;
+    width: 350px;
+    float: left;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+.boxmain p{
+    width: 285px;
+    float: left;
+    margin-top: 30px;
+    margin-left: 10px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.button{
+   display: inline-block;
+    width: 200px;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #945b2c;
+    background-color: #EAEAD7;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #535353;
+    margin-left: 50px;
+    margin-top: 30px;
+}
+.button:hover {
+    background-color: #945b2c;
+    color: #f5f5f5;
+}
+.button:active {
+    background-color:#EAEAD7;
+    color: #945b2c;
+    box-shadow: 0 5px #535353;
+    transform: translateY(4px);
+}
+</style>
+
+<main>
+   <div class="container">
+         <div class="maintitle">
+            <h1 style="font-size:80px; color:#508066; font-family: myFont; ">Plant a Tree Today!</h1>
+         </div>
+
+         <!--items-->
+         <!--item 1-->
+         <div class="boxmain">
+            <img src="{{ url_for('static', filename=pic1) }}" alt="Oak" id="item1" style="width: 300px; height: 300px" class = "img-thumbnail">
+            <form action="/items/item1" target="_blank">
+               <button class="button">{{name1}}</button>
+            </form>
+            <p><b>Just one oak can support more than 1,000 other species.</b></p>
+         </div>
+         <!--item 2-->
+         <div class="boxmain">
+            <img src="{{ url_for('static', filename=pic2) }}" alt="Cherry"id="item2"  style="width: 300px; height: 300px" class = "img-thumbnail"></a>
+            <form action="/items/item2" target="_blank">
+                  <button class="button">{{name2}}</button>
+            </form>
+            <p><b>Deep red cherries and beautiful blossom abound.</b></p>
+         </div>
+         <!--item 3-->
+         <div class="boxmain">
+            <img src="{{ url_for('static', filename=pic3) }}" alt="Birch"id="item3"  style="width: 300px; height: 300px" class = "img-thumbnail">
+            <form action="/items/item3" target="_blank">
+               <button class="button">{{name3}}</button>
+            </form>
+            <p><b>Watch its leaves change from vibrant green to striking gold.</b></p>
+         </div>
+         <!--item 4-->
+         <div class="boxmain">
+            <img src="{{ url_for('static', filename=pic4) }}" alt="Jungle"id="item4"  style="width: 300px; height: 300px" class = "img-thumbnail">
+            <form action="/items/item4" target="_blank">
+               <button class="button">{{name4}}</button>
+            </form>
+            <p><b>These hardy trees are ideally suited to exposed, wet land.</b></p>
+         </div>  
+         
+   </div>
+</main>
+{% endblock %}

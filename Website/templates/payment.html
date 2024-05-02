@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title%}Payment{% endblock %} 
+
+{% block content %}
+
+<form method ='POST'>
+    
+    <h3>Enter payment details below</h3>
+
+    <div class="form-group">
+
+        <label for="cardnumber"">Card Number</label>
+        <input 
+        type="numeric" 
+        class="form-control" 
+        maxlength="16" 
+        id="cardnumber" 
+        name="cardnumber" 
+        placeholder="Enter card number"
+        required/>
+
+        <label for="CVC">CVC</label>
+        <input
+        type ="numeric"
+        class="form-control"
+        maxlength="3"
+        id ="CVC"
+        name="CVC"
+        placeholder="Enter CVC"
+        required/>
+
+        <label for="DOE">Expiry date</label>
+        <input
+        type ="month"
+        class="form-control"
+        id ="DOE"
+        name="DOE"
+        placeholder="Enter Date of Expiry"
+        required/>
+
+        <button type="submit" class="btn btn-primary">Enter</button>
+
+
+
+
+
+
+    </div>
+</form>
+{% endblock %}

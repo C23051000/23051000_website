@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% block title%} {{itemname}} {% endblock %} 
+
+{% block content %}
+<form method="POST">
+<div class="class="col".col >
+    <img src="{{ url_for('static', filename=picture) }}" alt="Oak" id="item1" class="thumbnail" style = "height: 50%; width: 50%;">
+
+</div>
+
+<div class="class="col".col>  
+
+    <div>
+    <p>{{itemname}}</p>
+    </div>
+    <p>Item Description: {{description}}</p>
+    <p>Enviromental Impact: {{enviroment_impact}}</p>
+    <p>£{{price}}</p>
+    <label>Quantity</label>
+    <input 
+    type="text" 
+    class="form-control" 
+    id="Quantity" 
+    name="Quantity" 
+    placeholder="0"
+    required/>
+
+</div>
+
+<button type="submit" class="btn btn-primary">
+    Add to Basket
+</button>
+</form>
+
+
+
+{% endblock %}
