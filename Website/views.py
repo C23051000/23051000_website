@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify, request
 from flask_login import  login_required, current_user
 from .models import Items
 
@@ -7,19 +7,30 @@ views = Blueprint('views', __name__)
 @views.route('/')
 @login_required
 def home():
+    items = [
+            Items.query.filter_by(name='Oak').first(),
+            Items.query.filter_by(name='Cherry').first(),
+            Items.query.filter_by(name='Birch').first(),
+            Items.query.filter_by(name='Jungle').first()
+        ]
 
-    item1 = Items.query.filter_by(name = 'Oak').first()
-    item2 = Items.query.filter_by(name = 'Cherry').first()
-    item3 = Items.query.filter_by(name = 'Birch').first()
-    item4 = Items.query.filter_by(name = 'Jungle').first()
+    return render_template("home.html", items=items)
 
-    return render_template("home.html",
-                            name1=item1.name,
-                            pic1=item1.picture,
-                            name2=item2.name,
-                            pic2=item2.picture,
-                            name3=item3.name,
-                            pic3=item3.picture, 
-                            name4=item4.name,
-                            pic4=item4.picture) #this is the page with all of the items
+
+@views.route('/sort_items')
+@login_required
+def sort_items():
+    criteria = request.args.get('criteria')
+
+    if criteria == 'name':
+        items = Items.query.order_by(Items.name).all()
+    elif criteria == 'price':
+        items = Items.query.order_by(Items.price).all()
+    elif criteria == 'environment_impact':
+        items = Items.query.order_by(Items.enviroment_impact).all()
+    else:
+        items = Items.query.all()  # Default sorting
+
+    return render_template("home.html", items=items)
+
 

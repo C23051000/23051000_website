@@ -14,10 +14,17 @@ class Items(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100))
     description = db.Column(db.String(1000))
-    picture = db.Column(db.String(200)) #This will be the filepath of the photo in question
+    picture = db.Column(db.String(200)) 
     enviroment_impact = db.Column(db.Integer)
     price = db.Column(db.Float)
-
+    
+    
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+    rating = db.Column(db.Integer)
+    comment = db.Column(db.String(1000))
 
 class Basket(db.Model):
     id = db.Column(db.Integer, primary_key = True)

@@ -1,7 +1,8 @@
-{% extends "base.html" %} {% block title%} Basket {% endblock %} 
-
+{% extends "base.html" %} 
+{% block title%} Basket {% endblock %} 
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 *{
     margin: 0;
@@ -15,7 +16,6 @@ main{
     width: auto;
     height: auto;
     margin: auto;
-    overflow: hidden;
 }
 .maintitle{
     height: 100px;
@@ -23,21 +23,37 @@ main{
     text-align: center;
 }
 .basket-item{
-    height: 40%;
-    width: 25%;
-    float: left;
+    height: auto;
+    width: auto;
     margin-left: 50px;
     margin-top: 50px;
+    display: flex;
+    align-items: center;
+}
+.basket-item img {
+    width: 150px;
+    height: 150px;
+    margin-right: 20px;
+}
+.basket-item h1{
+    font-size: 25px; 
+    margin-right: 10px;
 }
 .basket-item p{
-    width: 285px;
-    float: left;
     font-family: 'Poppins', sans-serif;
-    
+    margin-left: 20px;
+}
+.button-container {
+    display: flex;
+    align-items: center;
+}
+.button-container .Dbtn {
+    margin-right: 10px; 
+}
+.button-container .btn {
+    margin-right: 5px; 
 }
 .button{
-    display: inline-block;
-    width: 200px;
     padding: 10px 15px;
     font-size: 15px;
     font-family: inherit;
@@ -50,8 +66,6 @@ main{
     border: none;
     border-radius: 15px;
     box-shadow: 0 9px #535353;
-    margin-left: 50px;
-    margin-top: 30px;
 }
 .button:hover {
     background-color: #945b2c;
@@ -63,39 +77,86 @@ main{
     box-shadow: 0 5px #535353;
     transform: translateY(4px);
 }
+.banner{
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: myFont;
+}
+.bannerbox{
+    max-width: 800px; 
+    text-align: center;
+}
+.bannerbox h1{
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #3b6e24;
+}
+.Dbtn {
+  border: none; 
+  color: red; 
+  padding: 12px 16px;
+  font-size: 16px; 
+  cursor: pointer; 
+}
+.Dbtn:hover {
+  background-color: RoyalBlue;
+}
+.btn {
+  border: none; 
+  color: black; 
+  padding: 10px 13px; 
+  font-size: 13px;
+  cursor: pointer; 
+}
+.btn:hover {
+  background-color: rgb(111, 92, 84);
+}
 </style>
 
 <main>
     <div class="container">
-            <div class="maintitle">
+        <div class="maintitle">
             <h1 style="font-size:80px; color:#232e28; font-family: myFont; ">Your Basket</h1>
-            </div>
+        </div>
 
-            <!--items-->
-            {% for item in items %}
-            <div class="basket-item">
-                <img src="{{ url_for('static', filename=item.picture) }}" alt="{{ item.name }}" style="width: 150px; height: 150px;">
-                <h3>{{ item.name }}</h3>
-                <p>Quantity:    <button class="w3-button">-</button> {{ item.quantity }} <button class="w3-button">+</button></p>
-                <p>Price per item: {{ item.price | currency }}</p>
-                <p>Total cost for item: {{ item.total | currency }}</p>
+        <!--items-->
+        {% for item in items %}
+        <div class="basket-item">
+            <a href="/items/{{ item.id }}"><img src="{{ url_for('static', filename=item.picture) }}" alt="{{ item.name }}"></a>
+            <h1><a href="{{ url_for('payment.item_details', item_id=item.id) }}">{{ item.name }}</a></h1>
+            <div class="button-container">
+                <form method="POST" action="{{ url_for('payment.remove_from_basket') }}">
+                    <input type="hidden" name="item" value="{{ item.name }}">
+                    <button type="submit" class="Dbtn"><i class="fa fa-trash"></i></button>
+                </form>
+                <p>Quantity: 
+                    <button class="btn" onclick="removeItem('{{ item.name }}')"><i class="fa fa-minus"></i></button>
+                    {{ item.quantity }} 
+                    <button class="btn" onclick="addItem('{{ item.name }}')"><i class="fa fa-plus"></i></button>
+                </p>
             </div>
+            <p>Price per item: <b>{{ item.price | currency }}</b></p>
+            <p>Total cost for item: <b>{{ item.total | currency }}</b></p>
+        </div>
         {% endfor %}
-         
     </div>
 
-    <p>Total Price: {{ totalprice | currency }}</p>
+    <div class="container">
+        <div class="banner">
+            <div class="bannerbox">
+                <h1>Total Price: {{ totalprice | currency }}</h1>
 
-    <form action="/payment/payment" target="_blank">
-        <button class="button">Checkout</button>
-    </form>
+                <form action="/payment/payment" target="_blank">
+                    <button class="button">Checkout</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
-
-
-
-
-
-
-
 
 {% endblock %}

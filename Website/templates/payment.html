@@ -1,49 +1,224 @@
-{% extends "base.html" %} {% block title%}Payment{% endblock %} 
+{% extends "base.html" %}
+{% block title%}Payment{% endblock %}
 
 {% block content %}
+<style>
+.container{
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    padding-bottom: 60px;
+    width: 900px;
+}
 
-<form method ='POST'>
-    
+.container form{
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    padding-top: 60px;
+    text-align: center;
+}
+
+.container form .inputBox{
+    margin-top: 20px;
+}
+
+.container form .inputBox span{
+    display: block;
+    color:#999;
+    padding-bottom: 5px;
+    width: 600px;
+    text-align: left;
+}
+
+.container form .inputBox input,
+.container form .inputBox select{
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    border:1px solid rgba(0,0,0,.3);
+    color:#444;
+    margin-bottom: 10px;
+}
+
+.container form .flexbox{
+    display: flex;
+    gap:15px;
+}
+
+.container form .flexbox .inputBox{
+    flex:1 1 150px;
+}
+
+.container form .submit-btn{
+    width: 100%;
+    background: rgb(116, 175, 118);
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 20px;
+    color:#fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s linear;
+}
+
+.container form .submit-btn:hover{
+    letter-spacing: 2px;
+    opacity: .8;
+}
+
+
+</style>
+<form method="POST" onsubmit="return validateForm()">
     <h3>Enter payment details below</h3>
 
-    <div class="form-group">
+    <div class="container">
+        <form action="">
+            <div class="inputBox">
+                <span>Card Holder</span>
+                <input type="text" class="form-control" id="cardHolder" name="cardHolder" />
+                <small id="cardHolderError" class="text-danger"></small> <!-- Error message placeholder -->
+            </div>
+            <div class="inputBox">
+                <span>Card Number</span>
+                <input type="text" class="form-control" id="cardnumber" name="cardnumber" />
+                <small id="cardnumberError" class="text-danger"></small> <!-- Error message placeholder -->
+            </div>
+            
+            <div class="inputBox">
+                <span>Expiration Date</span>
+                <select name="month" id="month" class="form-control">
+                    <option value="month" selected disabled>Month</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+                <select name="year" id="year" class="form-control">
+                    <option value="year" selected disabled>Year</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                    <option value="2024">2031</option>
+                    <option value="2025">2032</option>
+                    <option value="2026">2033</option>
+                    <option value="2027">2034</option>
+                    <option value="2028">2035</option>
+                    <option value="2029">2036</option>
+                    <option value="2030">2037</option>
+                </select>
+                <small id="expiryDateError" class="text-danger"></small> 
+            </div>
+            
+            
+            <div class="inputBox">
+                <span>CVC</span>
+                <input type="text" class="form-control" id="CVC" name="CVC" maxlength="3" />
+                <small id="cvcError" class="text-danger"></small>
+            </div>
 
-        <label for="cardnumber"">Card Number</label>
-        <input 
-        type="numeric" 
-        class="form-control" 
-        maxlength="16" 
-        id="cardnumber" 
-        name="cardnumber" 
-        placeholder="Enter card number"
-        required/>
+            </div>
+            <input type="submit" value="submit" class="submit-btn">
+        </form>
+    
+    </div>    
+        
 
-        <label for="CVC">CVC</label>
-        <input
-        type ="numeric"
-        class="form-control"
-        maxlength="3"
-        id ="CVC"
-        name="CVC"
-        placeholder="Enter CVC"
-        required/>
-
-        <label for="DOE">Expiry date</label>
-        <input
-        type ="month"
-        class="form-control"
-        id ="DOE"
-        name="DOE"
-        placeholder="Enter Date of Expiry"
-        required/>
-
-        <button type="submit" class="btn btn-primary">Enter</button>
-
-
-
-
-
-
-    </div>
+    <script>
+    
+    document.querySelector('.card-number-input').oninput = () =>{
+        document.querySelector('.card-number-box').innerText = document.querySelector('.card-number-input').value;
+    }
+    
+    document.querySelector('.card-holder-input').oninput = () =>{
+        document.querySelector('.card-holder-name').innerText = document.querySelector('.card-holder-input').value;
+    }
+    
+    document.querySelector('.month-input').oninput = () =>{
+        document.querySelector('.exp-month').innerText = document.querySelector('.month-input').value;
+    }
+    
+    document.querySelector('.year-input').oninput = () =>{
+        document.querySelector('.exp-year').innerText = document.querySelector('.year-input').value;
+    }
+    
+    document.querySelector('.cvv-input').oninput = () =>{
+        document.querySelector('.cvv-box').innerText = document.querySelector('.cvv-input').value;
+    }
+    
+    </script>
 </form>
+
+<script>
+    function validateForm() {
+    var cardNumber = document.getElementById("cardnumber").value.replace(/[^\d]/g, ''); // Remove non-digits
+    var cardNumberInput = document.getElementById("cardnumber");
+    var cardNumberError = document.getElementById("cardnumberError");
+
+    var month = document.getElementById("month").value;
+    var year = document.getElementById("year").value;
+    var expiryDateError = document.getElementById("expiryDateError");
+
+    var cardHolder = document.getElementById("cardHolder").value;
+    var cardHolderError = document.getElementById("cardHolderError");
+
+    var cvc = document.getElementById("CVC").value;
+    var cvcInput = document.getElementById("CVC");
+    var cvcError = document.getElementById("cvcError");
+
+    // Validate card number length and digits
+    if (cardNumber.length !== 16 || isNaN(cardNumber)) {
+        cardNumberInput.classList.add("is-invalid");
+        cardNumberError.textContent = "Card number must be 16 digits long and contain only numbers.";
+        return false; // Prevent form submission
+    } else {
+        cardNumberInput.classList.remove("is-invalid");
+        cardNumberError.textContent = ""; // Clear error message
+    }
+
+    // Validate expiration date
+    if (month === "month" || year === "year") {
+        expiryDateError.textContent = "Please select both month and year.";
+        return false; // Prevent form submission
+    } else {
+        expiryDateError.textContent = ""; // Clear error message
+    }
+
+    // Validate card holder name
+    if (cardHolder.trim() === "") {
+        cardHolderError.textContent = "Please enter the card holder's name.";
+        return false; // Prevent form submission
+    } else {
+        cardHolderError.textContent = ""; // Clear error message
+    }
+
+    // Validate CVC
+    if (cvc.length !== 3 || isNaN(cvc)) {
+        cvcInput.classList.add("is-invalid");
+        cvcError.textContent = "CVC must be 3 digits long and contain only numbers.";
+        return false; // Prevent form submission
+    } else {
+        cvcInput.classList.remove("is-invalid");
+        cvcError.textContent = ""; // Clear error message
+    }
+
+    return true; // Allow form submission
+}
+
+    </script>
+    
 {% endblock %}

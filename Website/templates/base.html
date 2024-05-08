@@ -2,14 +2,30 @@
 <html>
   <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content=" = "width=device-width, initial-scale1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"/>
-      
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
     <title>{% block title%}Home{% endblock%}</title>
     <!--css for nav-->
     <style>
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      header,nav,main,footer{
+          display: block;
+          width:100%;
+      }
+
+      body {
+          background-color: rgb(238,238,238);
+          color: #032b44;
+      }
       .custom-nav{
         background-color:#053225;
         color: #f5f5f5;
@@ -22,7 +38,16 @@
       .custom-nav .navbar-toggler-icon {
       background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* Change the color of the hamburger icon */
     }
-      </style>
+      footer{
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+    }
+    </style>
   </head>
 
   <body>
@@ -32,9 +57,9 @@
         </button>
         <div class="collapse navbar-collapse" id ="navbar">
           <div class="navbar-nav">
-            <a class="nav-item custom-nav id="home" href="/">Home</a>
-            <a class="nav-item custom-nav id="basket" href="/payment/basket">My Basket</a>
-            <a class="nav-item custom-nav id="logout" href="/auth/logout">Logout</a>
+            <a class="nav-item custom-nav id="home href="/">Home</a>
+            <a class="nav-item custom-nav id="basket href="/payment/basket">My Basket</a>
+            <a class="nav-item custom-nav id="logout href="/auth/logout">Logout</a>
 
 
           </div>
@@ -73,5 +98,79 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
+    <script>
+      function addItem(itemName) {
+          fetch('/payment/add_to_basket', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': '{{ csrf_token }}'
+              },
+              body: JSON.stringify({
+                  item: itemName,
+                  action: 'add'
+              })
+          }).then(response => {
+              if (response.ok) {
+                  window.location.reload(); // Refresh the page after successful addition
+              }
+          });
+      }
+  
+      function removeItem(itemName) {
+          fetch('/payment/add_to_basket', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': '{{ csrf_token }}'
+              },
+              body: JSON.stringify({
+                  item: itemName,
+                  action: 'remove'
+              })
+          }).then(response => {
+              if (response.ok) {
+                  window.location.reload(); // Refresh the page after successful removal
+              }
+          });
+      }
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  $(document).ready(function() {
+      $(".thumbnail").hover(function() {
+          var itemName = $(this).attr("data-item");
+          var description = $(this).find(".description");
+          $.ajax({
+              type: "GET",
+              url: "/get_description/" + itemName,
+              success: function(response) {
+                  description.text(response.description);
+                  description.show(); // Show description when AJAX request succeeds
+              },
+              error: function(error) {
+                  console.log(error);
+              }
+          });
+      }, function() {
+          // Hide description when mouse leaves item image
+          $(this).find(".description").hide();
+      });
+  });
+  </script>
+
+
+    
+
   </body>
+
+  <!--footer
+  <footer>
+    <div class="container">
+        &copy; Aneesa Ali Cardiff University 
+        <script>document.write(new Date().getFullYear());</script>
+    </div>
+  </footer>
+-->
 </html>

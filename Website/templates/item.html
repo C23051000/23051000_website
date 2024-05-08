@@ -1,36 +1,287 @@
-{% extends "base.html" %} {% block title%} {{itemname}} {% endblock %} 
+{% extends "base.html" %} 
+{% block title %} {{ itemname }} {% endblock %} 
 
 {% block content %}
-<form method="POST">
-<div class="class="col".col >
-    <img src="{{ url_for('static', filename=picture) }}" alt="Oak" id="item1" class="thumbnail" style = "height: 50%; width: 50%;">
+<style>
+.items {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    padding-top: 100px;
+}
+.items-col {
+    flex-basis: 32%;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+.items-col img {
+    width: 100%;
+    border-radius: 10px;
+}
+.items-col p {
+    padding: 0;
+}
+.items-col h1 {
+    margin-top: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+:root {
+	--yellow: #FFBD13;
+	--blue: #4383FF;
+	--blue-d-1: #3278FF;
+	--light: #F5F5F5;
+	--grey: #AAA;
+	--white: #FFF;
+	--shadow: 8px 8px 30px rgba(0,0,0,.05);
+}
+.wrapper {
+	background: var(--white);
+	padding: 2rem;
+	max-width: 576px;
+	width: 100%;
+	border-radius: .75rem;
+	box-shadow: var(--shadow);
+    text-align: center;
+	align-items: center; /* Center horizontally */
+    margin: auto; /* Center vertically */
+}
+.wrapper h3 {
+	font-size: 1.5rem;
+	font-weight: 600;
+	margin-bottom: 1rem;
+}
+.rating {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: .5rem;
+	font-size: 2rem;
+	color: var(--yellow);
+	margin-bottom: 2rem;
+}
+.rating .star {
+	cursor: pointer;
+}
+.rating .star.active {
+	opacity: 0;
+	animation: animate .5s calc(var(--i) * .1s) ease-in-out forwards;
+}
 
-</div>
+@keyframes animate {
+	0% {
+		opacity: 0;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.2);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
 
-<div class="class="col".col>  
 
-    <div>
-    <p>{{itemname}}</p>
+.rating .star:hover {
+	transform: scale(1.1);
+}
+textarea {
+	width: 100%;
+	background: var(--light);
+	padding: 1rem;
+	border-radius: .5rem;
+	border: none;
+	outline: none;
+	resize: none;
+	margin-bottom: .5rem;
+}
+.btn-group {
+	display: flex;
+	grid-gap: .5rem;
+	align-items: center;
+}
+.btn-group .btn {
+	padding: .75rem 1rem;
+	border-radius: .5rem;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	font-size: .875rem;
+	font-weight: 500;
+}
+.btn-group .btn.submit {
+	background: var(--blue);
+	color: var(--white);
+}
+.btn-group .btn.submit:hover {
+	background: var(--blue-d-1);
+}
+.btn-group .btn.cancel {
+	background: var(--white);
+	color: var(--blue);
+}
+.btn-group .btn.cancel:hover {
+	background: var(--light);
+}
+.review{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 150px;
+}
+
+.full-boxer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.box-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.comment-box{
+    width: 500px;
+    background: white;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 3px 3px 25px rgba(0,0,0,0.3);
+}
+
+.Profile{
+    display: flex;
+    align-items: center;
+}
+.Name{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.Name strong{
+    color: black;
+    font-size: 18px;
+}
+
+.comment p{
+    color: black;
+}
+</style>
+<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+<section class="items">
+        <div class="items-col">
+                <img src="{{ url_for('static', filename=item.picture) }}" alt="{{ item.name }}" style="height: 50%; width: 50%;"></a>
+                <h1>{{ item.name }}</a></h1>
+                <p>Item Description: {{ item.description }}</p>
+                <p><i class="fa fa-envira" style="font-size:20px;color:green;"></i> Enviromental Impact: {{item.enviroment_impact}}</p>
+                <p>Price: {{ item.price | currency }}</p>
+                
+
+                <form method="POST" action="{{ url_for('items.item', item_id=item.id) }}">
+					<label>Quantity:</label>
+                    <input type="number" id="Quantity" name="Quantity" placeholder="0" min="1" required />
+                    <button type="submit" class="btn btn-primary">Add to Basket</button>
+                </form>
+                </p>
+            </div>
+            
+        </div>
+    
     </div>
-    <p>Item Description: {{description}}</p>
-    <p>Enviromental Impact: {{enviroment_impact}}</p>
-    <p>£{{price}}</p>
-    <label>Quantity</label>
-    <input 
-    type="text" 
-    class="form-control" 
-    id="Quantity" 
-    name="Quantity" 
-    placeholder="0"
-    required/>
+</section>
 
+<div class="wrapper">
+    <h3>Leave a Review.</h3>
+    <form method="POST" action="{{ url_for('items.submit_review') }}">
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+        <div class="rating">
+            <input type="number" name="rating" hidden>
+            <i class='bx bx-star star' style="--i: 0;"></i>
+            <i class='bx bx-star star' style="--i: 1;"></i>
+            <i class='bx bx-star star' style="--i: 2;"></i>
+            <i class='bx bx-star star' style="--i: 3;"></i>
+            <i class='bx bx-star star' style="--i: 4;"></i>
+        </div>
+        <textarea name="opinion" cols="30" rows="5" placeholder="Enter Text Here..."></textarea>
+        <div class="btn-group">
+            <button type="submit" class="btn submit">Submit</button>
+            <button class="btn cancel">Cancel</button>
+        </div>
+    </form>
 </div>
 
-<button type="submit" class="btn btn-primary">
-    Add to Basket
-</button>
-</form>
+
+<section class="review">
+    {% for review in reviews %}
+    <div class="full-boxer">
+        <div class="comment-box">
+            <div class="box-top">
+                <div class="Profile">
+                    <div class="Name">
+                        <strong>Anonymous</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="rating">
+                {% for i in range(5) %}
+                {% if i < review.rating %}
+                <i class='bx bxs-star star'></i>
+                {% else %}
+                <i class='bx bx-star star'></i>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="comment">
+                <p>{{ review.comment }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
 
 
+<script>
+    const allStar = document.querySelectorAll('.rating .star')
+const ratingValue = document.querySelector('.rating input')
+
+allStar.forEach((item, idx)=> {
+	item.addEventListener('click', function () {
+		let click = 0
+		ratingValue.value = idx + 1
+
+		allStar.forEach(i=> {
+			i.classList.replace('bxs-star', 'bx-star')
+			i.classList.remove('active')
+		})
+		for(let i=0; i<allStar.length; i++) {
+			if(i <= idx) {
+				allStar[i].classList.replace('bx-star', 'bxs-star')
+				allStar[i].classList.add('active')
+			} else {
+				allStar[i].style.setProperty('--i', click)
+				click++
+			}
+		}
+	})
+})
+</script>
 
 {% endblock %}
